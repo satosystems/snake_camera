@@ -43,6 +43,10 @@ void turnVertical(double angle) {
 }
 
 int main(int argc, char *argv[]) {
+    bool withWindow = false;
+    if (argc > 1 && (strcmp("--window", argv[1]) == 0 || strcmp("-w", argv[1]) == 0)) {
+        withWindow = true;
+    }
     servo.reset();
     usleep(100000);
     // サーボ制御パルス周波数の設定。
@@ -53,7 +57,7 @@ int main(int argc, char *argv[]) {
     char cascade[] = "/usr/share/opencv/haarcascades/haarcascade_frontalface_alt.xml";
     double w = 160;
     double h = 120;
-    cvNamedWindow("Snake Camera", CV_WINDOW_AUTOSIZE);
+    if (withWindow) cvNamedWindow("Snake Camera", CV_WINDOW_AUTOSIZE);
     CvCapture *capture = NULL;
     capture = cvCreateCameraCapture(0);
     // キャプチャサイズを設定する．
@@ -108,7 +112,8 @@ int main(int argc, char *argv[]) {
                 turnVertical(angleY);
             }
         }
-        cvShowImage("Snake Camera", frame);
+
+        if (withWindow) cvShowImage("Snake Camera", frame);
         char c = cvWaitKey(33);
         if (c == 27) break;
     }
@@ -117,6 +122,6 @@ int main(int argc, char *argv[]) {
     // カスケード識別器の解放
     cvReleaseHaarClassifierCascade(&cvHCC);
     cvReleaseCapture(&capture);
-    cvDestroyWindow("Snake Camera");
+    if (withWindow) cvDestroyWindow("Snake Camera");
 }
 

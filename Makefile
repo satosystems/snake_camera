@@ -20,13 +20,9 @@ $(TARGET): $(OBJS)
 .cpp.o: $(HEADER)
 	$(CXX) -c $(CPPFLAGS) $< -o $@ $(INCLUDES)
 
-test: $(HEADER) ServoDriver.cpp ServoDriverTest.cpp
+test: $(HEADER) ServoDriver.cpp Test.cpp
 	$(CXX) -o $@ $^ $(INCLUDES) $(LDFLAGS)
 
 clean:
 	rm -f $(OBJS) $(TARGET) $(TEST)
-
-haarcascade_frontalface_alt.xml:
-	curl -o $@ https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_alt.xml
-
 
